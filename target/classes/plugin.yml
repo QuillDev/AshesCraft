@@ -1,0 +1,4 @@
+name: Quill
+version: 1.0-SNAPSHOT
+main: ashes.quill.Quill
+api-version: 1.16

@@ -1,0 +1,4 @@
+name: Quill
+version: ${project.version}
+main: ashes.quill.Quill
+api-version: 1.16
