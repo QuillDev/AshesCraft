@@ -1,12 +1,13 @@
 package ashes.quill.Player;
 
-import ashes.quill.NodeSystem.NodeUtils;
-import ashes.quill.Utils.Coordinates2d;
+import ashes.quill.NodeSystem.Node;
+import ashes.quill.NodeSystem.NodeManager;
 import org.bukkit.entity.Player;
 
 public class AshesPlayer {
-    private Coordinates2d nodeCoordinates;
+    private Node node;
     private Player player;
+    private int level = 1;
 
     /**
      * Constructor for an "ashes player"
@@ -14,18 +15,30 @@ public class AshesPlayer {
      */
     public AshesPlayer(Player player){
         this.player = player;
-        this.nodeCoordinates = NodeUtils.getNodeFromChunk(this.player.getChunk());
+        this.node = NodeManager.getNodeFromChunk(this.player.getChunk());
     }
 
+    /**
+     * Get the player
+     * @return the player
+     */
     public Player getPlayer() {
         return player;
     }
 
-    public Coordinates2d getNodeCoordinates() {
-        return nodeCoordinates;
+    /**
+     * Get the node the player is in
+     * @return the node the player is in
+     */
+    public Node getNode() {
+        return node;
     }
 
-    public void setNodeCoordinates(Coordinates2d nodeCoordinates) {
-        this.nodeCoordinates = nodeCoordinates;
+    /**
+     * Set the node the player is in
+     * @param node the node to set the player's active node to
+     */
+    public void setNode(Node node) {
+        this.node = node;
     }
 }

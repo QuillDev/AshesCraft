@@ -1,5 +1,5 @@
-/**
- * @author Quill
+/*
+  @author Quill
  * @since 8.23.2020
  * @description Class that manages coords in a 2d plane (minecraft x, z)
  */
@@ -71,5 +71,10 @@ public class Coordinates2d {
     @Override
     public int hashCode() {
         return Objects.hash(x, z);
+    }
+
+    @Override
+    public String toString() {
+        return "x=" + x + ", z=" + z;
     }
 }
