@@ -84,15 +84,14 @@ public class AshesPlayer {
             //Increment level
             level++;
 
-            //calculate goal exp.
-            goalExp = (int) Math.pow(level, 2.2) + 500;
-
             //Log that the player leveled up
             player.sendMessage(ChatColor.GREEN + "You've leveled up to level" + level + "!");
 
             //reset the experience
             exp = 0;
         }
+        //calculate goal exp.
+        goalExp = (int) Math.pow(level, 2.2) + 500;
     }
 
     /**
