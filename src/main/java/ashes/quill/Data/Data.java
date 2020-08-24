@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.UUID;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 public class Data implements Serializable {
     private static transient final long serialVersionUID = -8571511353258712225L;
@@ -34,7 +36,7 @@ public class Data implements Serializable {
         try {
             System.out.println("Attempting to save data.");
             //File output chain
-            BukkitObjectOutputStream out = new BukkitObjectOutputStream(new FileOutputStream(filePath));
+            BukkitObjectOutputStream out = new BukkitObjectOutputStream(new GZIPOutputStream(new FileOutputStream(filePath)));
             out.writeObject(this);
             out.close();
             return true;
@@ -51,7 +53,7 @@ public class Data implements Serializable {
      */
     public static Data loadData(String filePath) {
         try {
-            BukkitObjectInputStream in = new BukkitObjectInputStream(new FileInputStream(filePath));
+            BukkitObjectInputStream in = new BukkitObjectInputStream(new GZIPInputStream( new FileInputStream(filePath)));
             Data data = (Data) in.readObject();
             in.close();
             return data;

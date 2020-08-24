@@ -10,7 +10,6 @@ import java.util.*;
 import java.util.logging.Level;
 
 //TODO Split character data into different files based on their UUIDs, load data on player joining.
-//TODO Add GZip back after removing it
 public class PlayerSaveLoad {
 
     /**
