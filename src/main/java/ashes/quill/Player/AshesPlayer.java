@@ -2,12 +2,14 @@ package ashes.quill.Player;
 
 import ashes.quill.NodeSystem.Node;
 import ashes.quill.NodeSystem.NodeManager;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class AshesPlayer {
     private Node node;
     private Player player;
     private int level = 1;
+    private int exp = 0;
 
     /**
      * Constructor for an "ashes player"
@@ -48,5 +50,24 @@ public class AshesPlayer {
      */
     public int getLevel() {
         return level;
+    }
+
+    /**
+     * Add Experience to the players exp
+     * @param exp
+     */
+    public void addExp(int exp){
+        this.exp += exp;
+        calcLevel();
+    }
+
+    /**
+     * Calculate if the player should level up
+     */
+    public void calcLevel(){
+        if(exp > level * 20){
+            level++;
+            player.sendMessage(ChatColor.GREEN + "You've leveled up to level" + level + "!");
+        }
     }
 }

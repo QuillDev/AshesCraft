@@ -3,14 +3,15 @@ package ashes.quill.Player;
 import ashes.quill.NodeSystem.Node;
 import ashes.quill.NodeSystem.NodeManager;
 import com.destroystokyo.paper.event.player.PlayerConnectionCloseEvent;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -120,6 +121,25 @@ public class PlayerManager implements Listener {
 
         AshesPlayer ashesPlayer = getPlayerFromList(player);
         assert ashesPlayer != null;
-        player.sendMessage(Color.GREEN + "Welcome Lvl. " + ashesPlayer.getLevel() + " player " + player.getDisplayName() + "");
+        player.sendMessage(ChatColor.GREEN + "Welcome Lvl. " + ashesPlayer.getLevel() + " player " + player.getDisplayName() + "");
+    }
+
+    @EventHandler
+    private void onBreakBlock(BlockBreakEvent event){
+        int expgain = 5;
+
+        //Get the player
+        Player player = event.getPlayer();
+        registerPlayer(player); //register the player
+
+        //Get the ashes player
+        AshesPlayer ashesPlayer = getPlayerFromList(player);
+
+        //add the experience from breaking a block
+        assert ashesPlayer != null;
+        ashesPlayer.addExp(expgain);
+
+        //log the experience gained.
+        player.sendMessage(ChatColor.BLUE + "Gained " + expgain);
     }
 }
