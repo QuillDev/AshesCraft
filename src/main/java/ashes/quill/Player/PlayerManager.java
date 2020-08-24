@@ -2,14 +2,18 @@ package ashes.quill.Player;
 
 import ashes.quill.NodeSystem.Node;
 import ashes.quill.NodeSystem.NodeManager;
+import com.destroystokyo.paper.event.player.PlayerConnectionCloseEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class PlayerManager implements Listener {
 
@@ -17,7 +21,6 @@ public class PlayerManager implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent movement){
-
         //Save to and from locations
         Location from = movement.getFrom();
         Location to = movement.getTo();
@@ -26,52 +29,28 @@ public class PlayerManager implements Listener {
         if(from.getX() == to.getX() && from.getZ() == to.getZ()) { return; }
 
         Player player = movement.getPlayer();
+        registerPlayer(player);
 
-        //Check if the player is in the AshesPlayer list
-        if(playerRegistered(player)){
+        //Get the player from the list and store it as ashesPlayer
+        AshesPlayer ashesPlayer = getPlayerFromList(player);
 
-            //Get the player from the list and store it as ashesPlayer
-            AshesPlayer ashesPlayer = getPlayerFromList(player);
+        //Save the player coordinates
+        Node playerNode = NodeManager.getNodeFromChunk(player.getChunk());
 
-            //Save the player coordinates
-            Node playerNode = NodeManager.getNodeFromChunk(player.getChunk());
+        //If there is a difference in node coordinates
+        assert ashesPlayer != null;
+        if(!ashesPlayer.getNode().equals(playerNode)){
 
-            //If there is a difference in node coordinates
-            assert ashesPlayer != null;
-            if(!ashesPlayer.getNode().equals(playerNode)){
+            //Tell the player they've entered a new node
+            player.sendMessage("Entered node at coordinates " + playerNode.getCoordinateString());
 
-                //Tell the player they've entered a new node
-                player.sendMessage("Entered node at coordinates " + playerNode.getCoordinateString());
+            //set the players node coordinates to the current node they occupy
+            ashesPlayer.setNode(playerNode);
 
-                //set the players node coordinates to the current node they occupy
-                ashesPlayer.setNode(playerNode);
-
-                if(!NodeManager.nodeExists(playerNode)){
-                    NodeManager.addNode(playerNode);
-                }
+            if(!NodeManager.nodeExists(playerNode)){
+                NodeManager.addNode(playerNode);
             }
         }
-    }
-
-    /**
-     * Check whether the current player is registered in the player list
-     * @param player the player to check
-     * @return whether the player has been registered
-     */
-    private boolean playerRegistered(Player player){
-
-        //Iterate through all players in the player list
-        for(AshesPlayer ashesPlayer : playerList){
-
-            //check if the player has been registered
-            if(ashesPlayer.getPlayer() == player){
-                return true;
-            }
-        }
-
-        //Add the new player if they weren't in the player list.
-        playerList.add(new AshesPlayer(player));
-        return false;
     }
 
     /**
@@ -94,5 +73,53 @@ public class PlayerManager implements Listener {
 
         //Something went very wrong.
         return null;
+    }
+
+    /**
+     * Add player to the player list
+     * @param player to register
+     */
+    private void registerPlayer(Player player) {
+
+        //Check if player is already registered
+        for(AshesPlayer ashesPlayer : playerList) {
+            if(ashesPlayer.getPlayer().equals(player)){
+                return;
+            }
+        }
+        playerList.add(new AshesPlayer(player));
+        System.out.println("Added player " + player.getDisplayName());
+    }
+
+    //Triggers on player leaving the server
+    @EventHandler
+    private void onLeave(PlayerConnectionCloseEvent event){
+        UUID playerUUID = event.getPlayerUniqueId();
+
+        //Iterate through all players in player list
+        for(AshesPlayer ashesPlayer : playerList){
+
+            //If the player has a unique id equal to the one of the player who left
+            if(ashesPlayer.getPlayer().getUniqueId() == playerUUID) {
+                //remove that player from the player list
+                playerList.remove(ashesPlayer);
+                System.out.println("[Quill] [Player Manager] Removed " + event.getPlayerName() + " from active player list");
+                break;
+            }
+        }
+    }
+
+    //Triggers on player joining
+    @EventHandler
+    private void onJoin(PlayerJoinEvent event) {
+        //Register the player when they join
+        Player player = event.getPlayer();
+
+        //register the player
+        registerPlayer(player);
+
+        AshesPlayer ashesPlayer = getPlayerFromList(player);
+        assert ashesPlayer != null;
+        player.sendMessage(Color.GREEN + "Welcome Lvl. " + ashesPlayer.getLevel() + " player " + player.getDisplayName() + "");
     }
 }

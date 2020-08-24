@@ -3,11 +3,15 @@ package ashes.quill.NodeSystem;
 import ashes.quill.Config.Constants;
 import ashes.quill.Utils.Coordinates2d;
 import org.bukkit.Chunk;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NodeManager {
+public class NodeManager implements Listener {
 
     private static List<Node> nodes = new ArrayList<Node>();
 
@@ -44,5 +48,16 @@ public class NodeManager {
         int z = Math.floorDiv(chunk.getZ(), Constants.nodeSize);
 
         return new Node(new Coordinates2d(x, z));
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event){
+        Player player = event.getPlayer();
+        Node node = getNodeFromChunk(player.getChunk());
+
+        //If the node they spawned in didn't exist, add it
+        if(!nodeExists(node)){
+            addNode(node);
+        }
     }
 }

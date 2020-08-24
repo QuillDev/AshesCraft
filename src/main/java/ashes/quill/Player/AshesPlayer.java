@@ -41,4 +41,12 @@ public class AshesPlayer {
     public void setNode(Node node) {
         this.node = node;
     }
+
+    /***
+     * Get the players level
+     * @return the level
+     */
+    public int getLevel() {
+        return level;
+    }
 }

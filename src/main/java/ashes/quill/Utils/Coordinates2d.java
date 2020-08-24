@@ -1,16 +1,16 @@
-/*
-  @author Quill
- * @since 8.23.2020
- * @description Class that manages coords in a 2d plane (minecraft x, z)
- */
 package ashes.quill.Utils;
 
 import java.util.Objects;
 
+/**
+ * @author Quill
+ * @since 8.23.2020
+ * @description Class that manages coordinates in a 2d plane (minecraft x, z)
+ */
 public class Coordinates2d {
 
-    private int x;
-    private int z;
+    private final int x;
+    private final int z;
 
     /**
      * Creates new coordinates passing the game coordinates into them
@@ -36,22 +36,6 @@ public class Coordinates2d {
      */
     public int getZ() {
         return z;
-    }
-
-    /**
-     * Set the X coordinate to the x parameter
-     * @param x the x to set it to
-     */
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    /**
-     * Set the Z coordinate to the z parameter
-     * @param z the z to set it to
-     */
-    public void setZ(int z) {
-        this.z = z;
     }
 
     /**
