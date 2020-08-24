@@ -10,13 +10,27 @@ public class AshesPlayer {
     private Player player;
     private int level = 1;
     private int exp = 0;
+    private int goalExp = 500;
 
     /**
      * Constructor for an "ashes player"
      * @param player object from retrieved method
      */
+    public AshesPlayer(Player player, int level, int exp){
+        this.player = player;
+        this.level = level;
+        this.exp = exp;
+        this.node = NodeManager.getNodeFromChunk(this.player.getChunk());
+    }
+
+    /**
+     * Create player with default values
+     * @param player to set values to
+     */
     public AshesPlayer(Player player){
         this.player = player;
+        this.level = 1;
+        this.exp = 0;
         this.node = NodeManager.getNodeFromChunk(this.player.getChunk());
     }
 
@@ -54,10 +68,11 @@ public class AshesPlayer {
 
     /**
      * Add Experience to the players exp
-     * @param exp
+     * @param expFromAction experience to be gained from the action
      */
-    public void addExp(int exp){
-        this.exp += exp;
+    public void addExp(int expFromAction){
+        exp += expFromAction;
+        player.sendMessage(ChatColor.BLUE + "Level: " + level + " " + exp + "/" + goalExp);
         calcLevel();
     }
 
@@ -65,9 +80,42 @@ public class AshesPlayer {
      * Calculate if the player should level up
      */
     public void calcLevel(){
-        if(exp > level * 20){
+        if(exp > goalExp){
+            //Increment level
             level++;
+
+            //calculate goal exp.
+            goalExp = (int) Math.pow(level, 2.2) + 500;
+
+            //Log that the player leveled up
             player.sendMessage(ChatColor.GREEN + "You've leveled up to level" + level + "!");
+
+            //reset the experience
+            exp = 0;
         }
+    }
+
+    /**
+     * Get Current experience
+     * @return the experience
+     */
+    public int getExp() {
+        return exp;
+    }
+
+    /**
+     * Set player's level
+     * @param level to set to
+     */
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    /**
+     * Set players experience
+     * @param exp experience to set to
+     */
+    public void setExp(int exp) {
+        this.exp = exp;
     }
 }
