@@ -1,9 +1,8 @@
-<p align="center">
-  <h1> Ash Craft </h1>
+<p align="center"><h1> Ash Craft </h1></p>
 
 <img src="https://ashesofcreation.wiki/images/thumb/c/cb/ashes-of-creation-new-logo.png/450px-ashes-of-creation-new-logo.png">
 Minecraft plugin aiming to mimic the game <a href="https://ashesofcreation.com/">"Ashes of Creation"</a>
-</p>
+
 
 
 #### Dependencies used
