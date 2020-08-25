@@ -32,24 +32,22 @@ public class Data implements Serializable {
     /**
      * Save Data
      */
-    public boolean saveData(String filePath) {
+    public void saveData(String filePath) {
         try {
             System.out.println("Attempting to save data.");
             //File output chain
             BukkitObjectOutputStream out = new BukkitObjectOutputStream(new GZIPOutputStream(new FileOutputStream(filePath)));
             out.writeObject(this);
             out.close();
-            return true;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
         }
     }
 
     /**
      * Load data from the file given
      * @param filePath the file to check for data
-     * @return
+     * @return the data that was loaded
      */
     public static Data loadData(String filePath) {
         try {

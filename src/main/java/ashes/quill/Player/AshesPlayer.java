@@ -7,9 +7,9 @@ import org.bukkit.entity.Player;
 
 public class AshesPlayer {
     private Node node;
-    private Player player;
-    private int level = 1;
-    private int exp = 0;
+    private final Player player;
+    private int level;
+    private int exp;
     private int goalExp = 500;
 
     /**
@@ -20,7 +20,6 @@ public class AshesPlayer {
         this.player = player;
         this.level = level;
         this.exp = exp;
-        this.node = NodeManager.getNodeFromChunk(this.player.getChunk());
     }
 
     /**
@@ -31,7 +30,6 @@ public class AshesPlayer {
         this.player = player;
         this.level = 1;
         this.exp = 0;
-        this.node = NodeManager.getNodeFromChunk(this.player.getChunk());
     }
 
     /**
@@ -103,18 +101,11 @@ public class AshesPlayer {
     }
 
     /**
-     * Set player's level
-     * @param level to set to
+     * Get the displayName for the player
+     * @return the display name
      */
-    public void setLevel(int level) {
-        this.level = level;
+    public String getDisplayName(){
+        return getPlayer().getDisplayName();
     }
 
-    /**
-     * Set players experience
-     * @param exp experience to set to
-     */
-    public void setExp(int exp) {
-        this.exp = exp;
-    }
 }

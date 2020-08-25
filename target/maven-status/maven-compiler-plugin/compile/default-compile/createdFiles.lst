@@ -1,11 +1,14 @@
-ashes\quill\Player\PlayerActions.class
 ashes\quill\Data\Data.class
+ashes\quill\NodeSystem\NodeNameGenerator.class
+ashes\quill\Quill.class
+ashes\quill\NodeSystem\Node.class
+ashes\quill\Player\PlayerEvents.class
+ashes\quill\NodeSystem\NodeSaveLoad.class
 ashes\quill\Config\Constants.class
 ashes\quill\Player\PlayerManager.class
-ashes\quill\Quill.class
 ashes\quill\Utils\Coordinates2d.class
-ashes\quill\NodeSystem\Node.class
 ashes\quill\NodeSystem\NodeManager.class
 ashes\quill\Player\AshesPlayer.class
 ashes\quill\Player\PlayerSaveLoad.class
+ashes\quill\NodeSystem\NodeEvents.class
 ashes\quill\Utils\Scheduler.class

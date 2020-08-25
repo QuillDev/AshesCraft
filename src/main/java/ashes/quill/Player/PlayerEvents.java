@@ -13,9 +13,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerActions implements Listener {
+//TODO Make it so getNodeFromChunk isn't so fugly / doesn't rely on creatinng a node object.. its bad
+//TODO NODES SHOULD NOT BE TOUCHED IN THE PLAYER MANGAGER!!! AHHH THE HUMANITY
+public class PlayerEvents implements Listener {
 
     PlayerManager playerManager = Constants.playerManager;
+    NodeManager nodeManager = Constants.nodeManager;
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent movement){
@@ -33,22 +36,20 @@ public class PlayerActions implements Listener {
         AshesPlayer ashesPlayer = playerManager.getPlayerFromList(player);
 
         //Save the player coordinates
-        Node playerNode = NodeManager.getNodeFromChunk(player.getChunk());
+        Node playerNode = nodeManager.getNodeFromChunk(player.getChunk());
 
         //If there is a difference in node coordinates
         assert ashesPlayer != null;
         if(!ashesPlayer.getNode().equals(playerNode)){
-
-            //Tell the player they've entered a new node
-            player.sendMessage("Entered node at coordinates " + playerNode.getCoordinateString());
-
-            //set the players node coordinates to the current node they occupy
-            ashesPlayer.setNode(playerNode);
-
-            if(!NodeManager.nodeExists(playerNode)){
-                NodeManager.addNode(playerNode);
-            }
+            nodeManager.setPlayerNode(ashesPlayer, playerNode);
+            player.sendMessage("You entered " + ashesPlayer.getNode().getName());
         }
+        //Get the node you entered
+        Node enteredNode = nodeManager.getNodeFromChunk(player.getChunk());
+
+
+
+
     }
 
     //TODO Trigger save on player exit
@@ -72,6 +73,7 @@ public class PlayerActions implements Listener {
     @EventHandler
     private void onJoin(PlayerJoinEvent event) {
         PlayerManager playerManager = Constants.playerManager;
+
         //Register the player when they join
         Player player = event.getPlayer();
 

@@ -1,5 +1,7 @@
 package ashes.quill.Player;
 
+import ashes.quill.Config.Constants;
+import ashes.quill.NodeSystem.NodeManager;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ public class PlayerManager {
     public PlayerManager(){}
 
     private final PlayerSaveLoad saveLoad = new PlayerSaveLoad();
+    private final NodeManager nodeManager = Constants.nodeManager;
 
     /**
      * Get an ashes player from the array based on a player query
@@ -64,6 +67,8 @@ public class PlayerManager {
             }
         }
         playerList.add(new AshesPlayer(player));
+
+        //Set the player node
         System.out.println("Added player " + player.getDisplayName());
     }
 

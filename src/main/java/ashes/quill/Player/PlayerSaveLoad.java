@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.*;
 import java.util.logging.Level;
 
-//TODO Split character data into different files based on their UUIDs, load data on player joining.
+//TODO Make loading and saving files of different structures easier.... please... I need it.
 public class PlayerSaveLoad {
 
     /**
@@ -18,8 +18,8 @@ public class PlayerSaveLoad {
      */
     public void savePlayer(AshesPlayer ashesPlayer) {
         UUID uuid = ashesPlayer.getPlayer().getUniqueId();
-        Integer level = ashesPlayer.getLevel();
-        Integer experience = ashesPlayer.getExp();
+        int level = ashesPlayer.getLevel();
+        int experience = ashesPlayer.getExp();
 
         File path = new File(Constants.playerDataPath);
         if(!path.exists()) { path.mkdirs(); }
