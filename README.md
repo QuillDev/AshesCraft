@@ -1,6 +1,6 @@
 # Ash Craft
 <p align="center"> 
-  <img src="https://ashesofcreation.wiki/images/thumb/c/cb/ashes-of-creation-new-logo.png/450px-ashes-of-creation-new-logo.png">
+  <img src="https://ashesofcreation.wiki/images/thumb/c/cb/ashes-of-creation-new-logo.png/450px-ashes-of-creation-new-logo.png" width="30%">
   <br>
   Minecraft plugin aiming to mimic the game "Ashes of Creation"
 </p>
