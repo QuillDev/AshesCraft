@@ -52,37 +52,33 @@ public class PlayerEvents implements Listener {
 
     }
 
-    //TODO Trigger save on player exit
-    //Triggers on player leaving the server
-    @EventHandler
-    private void onLeave(PlayerQuitEvent event){
-        //Get player
-        Player player = event.getPlayer();
 
-        //Get the ashes player
-        AshesPlayer ashesPlayer = playerManager.getPlayerFromList(player);
-
-        //save the ashes player
-        playerManager.savePlayer(ashesPlayer);
-
-        //remove the player from the player list
-        playerManager.removePlayer(player);
-    }
 
     //Triggers on player joining
     @EventHandler
     private void onJoin(PlayerJoinEvent event) {
-        PlayerManager playerManager = Constants.playerManager;
-
-        //Register the player when they join
+        //Get the player from the event
         Player player = event.getPlayer();
 
+        //Load the player
         playerManager.loadPlayer(player);
-
-        AshesPlayer ashesPlayer = playerManager.getPlayerFromList(player);
-        assert ashesPlayer != null;
-        player.sendMessage(ChatColor.GREEN + "Welcome Lvl. " + ashesPlayer.getLevel() + " player " + player.getDisplayName() + "");
     }
+
+    //TODO Trigger save on player exit
+    //Triggers on player leaving the server
+    @EventHandler
+    private void onLeave(PlayerQuitEvent event){
+        //Get the player from the event
+        Player player = event.getPlayer();
+
+        //get the player from the player list
+        AshesPlayer ashesPlayer = playerManager.getPlayerFromList(player);
+
+        playerManager.savePlayer(ashesPlayer);
+
+        playerManager.removePlayer(event.getPlayer());
+    }
+
 
     @EventHandler
     private void onBreakBlock(BlockBreakEvent event){

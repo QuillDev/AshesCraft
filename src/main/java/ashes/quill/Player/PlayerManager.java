@@ -44,32 +44,20 @@ public class PlayerManager {
      */
     public void registerPlayer(Player player, int level, int exp) {
 
-        //Check if player is already registered
-        for(AshesPlayer ashesPlayer : playerList) {
-            if(ashesPlayer.getPlayer().equals(player)){
-                return;
-            }
-        }
+        //If the player is already registered, please don't
+        if(playerExists(player)) { return; }
+
+        //add the player to the list using their info and exp
         playerList.add(new AshesPlayer(player, level, exp));
-        System.out.println("Added player " + player.getDisplayName());
+        managerLog("Added player " + player.getDisplayName());
     }
 
-    /**
-     * Add player to the player list
-     * @param player to register
-     */
-    public void registerPlayer(Player player) {
-
-        //Check if player is already registered
+    public boolean playerExists(Player player) {
         for(AshesPlayer ashesPlayer : playerList) {
-            if(ashesPlayer.getPlayer().equals(player)){
-                return;
-            }
+            if(ashesPlayer.equals(player)){return true; }
         }
-        playerList.add(new AshesPlayer(player));
 
-        //Set the player node
-        System.out.println("Added player " + player.getDisplayName());
+        return false;
     }
 
     /**
@@ -102,5 +90,13 @@ public class PlayerManager {
      */
     public void loadPlayer(Player player){
         saveLoad.loadPlayer(player);
+    }
+
+    /**
+     * Log to the console
+     * @param message
+     */
+    private void managerLog(String message) {
+        System.out.println("[Ashes] [Player Manger]");
     }
 }

@@ -5,6 +5,8 @@ import ashes.quill.NodeSystem.NodeManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class AshesPlayer {
     private Node node;
     private final Player player;
@@ -107,5 +109,14 @@ public class AshesPlayer {
     public String getDisplayName(){
         return getPlayer().getDisplayName();
     }
+
+    /**
+     * Get the UUID for the player
+     * @return the display name
+     */
+    public UUID getUUID(){
+        return getPlayer().getUniqueId();
+    }
+
 
 }

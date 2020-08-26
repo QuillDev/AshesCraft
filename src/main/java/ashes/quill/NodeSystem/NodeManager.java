@@ -110,6 +110,6 @@ public class NodeManager implements Listener {
      * @param message to send with nodelog prefix
      */
     private void nodeLog(String message){
-        System.out.println("[Quill] [Node Manager] " + message);
+        System.out.println("[Ashes] [Node Manager] " + message);
     }
 }
