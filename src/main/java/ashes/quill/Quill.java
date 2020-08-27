@@ -1,6 +1,7 @@
 package ashes.quill;
 
 import ashes.quill.NodeSystem.NodeEvents;
+import ashes.quill.NodeSystem.NodeManager;
 import ashes.quill.Player.PlayerEvents;
 import ashes.quill.Utils.Scheduler;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,7 +17,6 @@ public final class Quill extends JavaPlugin {
         //Use the event scheduler in Utils
         Scheduler scheduler = new Scheduler();
         scheduler.ScheduleEvents();
-
 
     }
 

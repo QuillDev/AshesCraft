@@ -24,7 +24,7 @@ public class DataManager {
             fileWriter.write(json.toString());
             fileWriter.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            //Print the stack
             e.printStackTrace();
         }
     }
@@ -37,6 +37,7 @@ public class DataManager {
     public JSONObject readJSON(File path) {
 
         try {
+            if(!path.exists()){dataLog("File does not exist \"" + path.getPath() + "\"");}
             Scanner fileScanner = new Scanner(path);
             StringBuilder jsonString = new StringBuilder();
             while(fileScanner.hasNextLine()) jsonString.append(fileScanner.nextLine());
@@ -47,5 +48,9 @@ public class DataManager {
 
         //Return null if an error occurred
         return null;
+    }
+
+    private void dataLog(String message){
+        System.out.println("[Ashes] [Data Manager] " + message);
     }
 }

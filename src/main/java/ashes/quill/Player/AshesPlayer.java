@@ -1,10 +1,10 @@
 package ashes.quill.Player;
 
 import ashes.quill.NodeSystem.Node;
-import ashes.quill.NodeSystem.NodeManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class AshesPlayer {
@@ -117,6 +117,4 @@ public class AshesPlayer {
     public UUID getUUID(){
         return getPlayer().getUniqueId();
     }
-
-
 }

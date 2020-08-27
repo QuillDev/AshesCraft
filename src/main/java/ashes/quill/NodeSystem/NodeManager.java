@@ -2,19 +2,34 @@ package ashes.quill.NodeSystem;
 
 import ashes.quill.Config.Constants;
 import ashes.quill.Player.AshesPlayer;
+import ashes.quill.Player.PlayerManager;
 import ashes.quill.Utils.Coordinates2d;
-import org.bukkit.Bukkit;
+
 import org.bukkit.Chunk;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginLogger;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NodeManager implements Listener {
 
+    //Create node manager to be implemented in other classes
+    private static NodeManager nodeManager = new NodeManager();
+
+    //Create list for nodes
     private final List<Node> nodes = new ArrayList<>();
+
+    //Create the node name generator
     private final NodeNameGenerator generator = new NodeNameGenerator();
+
+    //create the node save loader
+    private final NodeSaveLoad nodeSaveLoad = new NodeSaveLoad();
+
+
+    //Private node manager so we can't instance it
+    private NodeManager() {}
 
     /**
      * Add a node to the node list.
@@ -65,9 +80,8 @@ public class NodeManager implements Listener {
                 return curNode;
             }
         }
-        //Create the node
-        createNode(node);
 
+        nodeSaveLoad.loadNode(node);
         //return the node after getting it again
         return getNode(node);
     }
@@ -90,9 +104,15 @@ public class NodeManager implements Listener {
         nodeLog("New node " + node.getName() + " at " + node.getCoordinateString());
     }
 
+    /**
+     * Set the players node to the one they're currently in
+     * @param ashesPlayer the player to save the node to
+     * @param node the node
+     */
     public void setPlayerNode(AshesPlayer ashesPlayer, Node node){
+        //TODO Check if this is the cause
         if(!nodeExists(node)){
-            createNode(node);
+            nodeSaveLoad.loadNode(node);
         }
 
         //the player's new node
@@ -105,6 +125,39 @@ public class NodeManager implements Listener {
         nodeLog("Set " + ashesPlayer.getDisplayName() + "'s node to " + node.getName()+ " {" + node.getCoordinateString() + "}");
     }
 
+    public static NodeManager getInstance(){
+        return nodeManager;
+    }
+
+    public void onJoin(PlayerJoinEvent event) {
+        PlayerManager playerManager = PlayerManager.getInstance();
+
+        Player player = event.getPlayer();
+        AshesPlayer ashesPlayer = playerManager.getPlayerFromList(player);
+
+        //get the node coordinates from the players chunk
+        Node nodeFromChunk = nodeManager.getNodeFromChunk(player.getChunk());
+
+        //Load the node the player is in if it hasn't been loaded
+        nodeSaveLoad.loadNode(nodeFromChunk);
+
+        //Get the actual node from that node
+        Node node = getNode(nodeFromChunk);
+
+        nodeLog("Should be setting " + player.getName() + "'s node to " + node.getCoordinateString() + " named " + node.getName());
+        //TODO FIX
+
+        nodeManager.setPlayerNode(ashesPlayer, nodeManager.getNode(node));
+    }
+
+    /**
+     * Save all nodes currently in the node l
+     */
+    public void saveNodes(){
+        for(Node node : nodes){
+            nodeSaveLoad.saveNode(node);
+        }
+    }
     /**
      * Log messages from the node manager
      * @param message to send with nodelog prefix

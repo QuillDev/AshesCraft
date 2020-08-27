@@ -9,12 +9,21 @@ import java.util.List;
 
 public class PlayerManager {
 
+    //make the PlayerManager so we can get it's instance in other files
+    private static PlayerManager playerManager = new PlayerManager();
+
+
+    //Instantiate private vars the player manager will use
     private static final List<AshesPlayer> playerList = new ArrayList<>();
 
-    public PlayerManager(){}
+    //Instantiate an instance of the node manager
+    private final NodeManager nodeManager = NodeManager.getInstance();
 
+    //Create an instance of the player save loader
     private final PlayerSaveLoad saveLoad = new PlayerSaveLoad();
-    private final NodeManager nodeManager = Constants.nodeManager;
+
+
+    private PlayerManager(){}
 
     /**
      * Get an ashes player from the array based on a player query
@@ -27,7 +36,7 @@ public class PlayerManager {
         for(AshesPlayer ashesPlayer : playerList) {
 
             //if the player is equal the the queried player
-            if(ashesPlayer.getPlayer() == player){
+            if(ashesPlayer.getPlayer().equals(player)){
 
                 //return that ashes player
                 return ashesPlayer;
@@ -43,18 +52,22 @@ public class PlayerManager {
      * @param player to register
      */
     public void registerPlayer(Player player, int level, int exp) {
-
         //If the player is already registered, please don't
         if(playerExists(player)) { return; }
 
+        //Create an ashes player using the given info
+        AshesPlayer ashesPlayer = new AshesPlayer(player, level, exp);
+
         //add the player to the list using their info and exp
-        playerList.add(new AshesPlayer(player, level, exp));
-        managerLog("Added player " + player.getDisplayName());
+        playerList.add(ashesPlayer);
+
+        //Log that we registered the player
+        managerLog("Added " + ashesPlayer.getDisplayName() + " Level: " + ashesPlayer.getLevel());
     }
 
     public boolean playerExists(Player player) {
         for(AshesPlayer ashesPlayer : playerList) {
-            if(ashesPlayer.equals(player)){return true; }
+            if(ashesPlayer.getUUID() == player.getUniqueId()){ System.out.println("Player Exists"); return true; }
         }
 
         return false;
@@ -85,6 +98,13 @@ public class PlayerManager {
     }
 
     /**
+     * Get the player managers instance
+     * @return the player manager
+     */
+    public static PlayerManager getInstance(){
+        return playerManager;
+    }
+    /**
      * Load a player by passing in the player object
      * @param player to retrieve data on
      */
@@ -93,10 +113,12 @@ public class PlayerManager {
     }
 
     /**
-     * Log to the console
+     * Log to the con
      * @param message
      */
     private void managerLog(String message) {
-        System.out.println("[Ashes] [Player Manger]");
+        System.out.println("[Ashes] [Player Manger]" + message);
     }
+
+
 }

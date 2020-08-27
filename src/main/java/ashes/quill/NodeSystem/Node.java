@@ -63,6 +63,38 @@ public class Node {
         return name;
     }
 
+    /**
+     * Get the nodes x
+     * @return the nodes x
+     */
+    public int getX(){
+        return coordinates.getX();
+    }
+
+    /**
+     * Get the nodes Z
+     * @return the nodes z
+     */
+    public int getZ(){
+        return coordinates.getZ();
+    }
+
+    /**
+     * Get the nodes exp
+     * @return the nodes exp
+     */
+    public int getExperience() {
+        return experience;
+    }
+
+    /**
+     * Get the nodes level
+     * @return the nodes level
+     */
+    public int getLevel() {
+        return level;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

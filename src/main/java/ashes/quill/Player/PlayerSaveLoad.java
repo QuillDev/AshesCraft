@@ -4,43 +4,32 @@ import ashes.quill.Config.Constants;
 import ashes.quill.Data.DataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.UUID;
 import java.util.logging.Level;
 
-//TODO Make loading and saving files of different structures easier.... please... I need it.
 public class PlayerSaveLoad {
 
-    //Create instance of player manager
-    PlayerManager playerManager = Constants.playerManager;
-
     //Create instance of data manager
-    DataManager dataManager = new DataManager();
-
+    protected DataManager dataManager = new DataManager();
 
     /**
      * Save data about ashes players to a local file
      * @param ashesPlayer player object from an ashes player
      */
     public void savePlayer(AshesPlayer ashesPlayer) {
-        System.out.println("Attempting to save player " + ashesPlayer.getUUID());
+        saveLoadLog("Attempting to save player " + ashesPlayer.getUUID());
 
         //Create JSON Object for the player
         JSONObject playerObject = new JSONObject();
         playerObject.put("uuid", ashesPlayer.getUUID());
         playerObject.put("level", ashesPlayer.getLevel());
         playerObject.put("experience", ashesPlayer.getExp());
-        //Log this
-        System.out.println(ashesPlayer.getUUID().toString() +  " " + ashesPlayer.getLevel() + " " + ashesPlayer.getExp());
 
-        File path = new File("./plugins/quill", ashesPlayer.getUUID().toString()+".json");
+        File path = new File(Constants.playerPath, ashesPlayer.getUUID().toString()+".json");
 
         dataManager.writeJSON(path, playerObject);
-
-        Bukkit.getServer().getLogger().log(Level.INFO, "Data Saved");
     }
 
     /**
@@ -48,8 +37,20 @@ public class PlayerSaveLoad {
      * @param player to load from file
      */
     public void loadPlayer(Player player){
+        PlayerManager playerManager = PlayerManager.getInstance();
 
-        JSONObject playerObject = dataManager.readJSON(new File("./plugins/quill", player.getUniqueId().toString()+".json"));
+        //Create file
+        File path = new File(Constants.playerPath, player.getUniqueId().toString()+".json");
+        if(!path.exists()){
+            saveLoadLog("File for player " + player.getDisplayName() + " does not exist.");
+
+            //Register the player
+            playerManager.registerPlayer(player, 1, 0);
+            return;
+        }
+
+        //Get json object from file
+        JSONObject playerObject = dataManager.readJSON(path);
 
         //Get the players stats from their save file
         int level = playerObject.getInt("level");
@@ -59,7 +60,7 @@ public class PlayerSaveLoad {
         playerManager.registerPlayer(player, level, experience);
 
         //Log the players info
-        saveLoadLog("Loaded player" + player.getDisplayName() + "{ level:" + level + ", experience:" + experience + " }");
+        saveLoadLog("Loaded player " + player.getDisplayName() + "{ level:" + level + ", experience:" + experience + " }");
     }
 
     /**

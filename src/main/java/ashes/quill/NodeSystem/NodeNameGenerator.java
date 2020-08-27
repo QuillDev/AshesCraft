@@ -12,9 +12,6 @@ public class NodeNameGenerator {
         if(Math.floor(Math.random() * 3) == 0){
             townName.append(prefix[(int) Math.floor(Math.random() * prefix.length)] + " ");
         }
-        //Get the base index via random number generation
-        int baseIndex = (int) Math.floor(Math.random() * townName.length());
-        System.out.println(baseIndex);
 
         //Append the town name to the generator
         townName.append(baseNames[(int) Math.floor(Math.random() * baseNames.length)]);
