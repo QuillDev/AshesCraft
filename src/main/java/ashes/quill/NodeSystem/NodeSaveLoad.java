@@ -67,11 +67,20 @@ public class NodeSaveLoad {
         int level = nodeObject.getInt("level");
         int experience = nodeObject.getInt("experience");
 
-        //Register the node
-        nodeManager.addNode(new Node(new Coordinates2d(x, z), name, level, experience));
+        //Create a node based on the loaded data
+        Node loadedNode = new Node(new Coordinates2d(x, z), name, level, experience);
 
-        //Log the players info
-        saveLoadLog("Loaded node " + name + "{ level:" + level + ", experience:" + experience + " } at " + node.getCoordinateString());
+        //Register the node
+        if(!nodeManager.nodeExists(loadedNode)){
+            //add the node if it doesn't exist
+            nodeManager.addNode(loadedNode);
+
+            //Log the players info
+            saveLoadLog("Loaded node " + name + "{ level:" + level + ", experience:" + experience + " } at " + node.getCoordinateString());
+        }
+
+
+
     }
 
     private void saveLoadLog(String message){

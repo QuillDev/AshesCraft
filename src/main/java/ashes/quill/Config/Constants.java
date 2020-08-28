@@ -3,6 +3,8 @@ package ashes.quill.Config;
 import ashes.quill.Data.DataManager;
 import ashes.quill.NodeSystem.NodeManager;
 import ashes.quill.Player.PlayerManager;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 public class Constants {
     //Default settings for world construction

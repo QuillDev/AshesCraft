@@ -1,15 +1,15 @@
 package ashes.quill.Player;
 
-import ashes.quill.Config.Constants;
 import ashes.quill.NodeSystem.Node;
 import ashes.quill.NodeSystem.NodeManager;
+import com.sun.org.apache.xpath.internal.operations.String;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -18,8 +18,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 //TODO NODES SHOULD NOT BE TOUCHED IN THE PLAYER MANGAGER!!! AHHH THE HUMANITY
 public class PlayerEvents implements Listener {
 
-    static PlayerManager playerManager = PlayerManager.getInstance();
-    static NodeManager nodeManager = NodeManager.getInstance();
+    private static final PlayerManager playerManager = PlayerManager.getInstance();
+    private static final NodeManager nodeManager = NodeManager.getInstance();
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent movement){
@@ -79,30 +79,31 @@ public class PlayerEvents implements Listener {
         //remove the player from the active player list
         playerManager.removePlayer(event.getPlayer());
 
-        //If all players are offline save the state of the nodes
-        if(Bukkit.getOnlinePlayers().size() == 0){
-            //save all nodes data
-            nodeManager.saveNodes();
-        }
-
+        nodeManager.saveNodes();
     }
 
-
+    //TODO Chat manager maybe?
     @EventHandler
-    private void onBreakBlock(BlockBreakEvent event){
-        int expgain = 5;
-
-        //Get the player
+    private void onChat(AsyncPlayerChatEvent event){
+        //Save the player
         Player player = event.getPlayer();
 
-        //Get the ashes player
+        //Create ashes player
         AshesPlayer ashesPlayer = playerManager.getPlayerFromList(player);
-        if(ashesPlayer == null) { return; }
 
-        //add the experience from breaking a block
-        ashesPlayer.addExp(expgain);
+        //Set format to only contain message text
+        event.setFormat("%2$s");
 
-        //log the experience gained.
-        player.sendMessage(ChatColor.BLUE + "Gained " + expgain);
+        //String builder for the message
+        StringBuilder message = new StringBuilder();
+
+        if(playerManager.isGM(ashesPlayer)){ message.append(ChatColor.WHITE + "[" + ChatColor.RED + "GM" + ChatColor.WHITE + "]");}
+
+        //add prefix to the message
+        message.append(ChatColor.WHITE + "[" + ChatColor.BLUE + "Lvl. " + ashesPlayer.getLevel() + ChatColor.WHITE + "] " + player.getDisplayName() + ": " + event.getMessage());
+
+
+        //Send the message
+        event.setMessage(message.toString());
     }
 }

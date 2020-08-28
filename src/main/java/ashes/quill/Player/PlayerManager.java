@@ -6,12 +6,12 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class PlayerManager {
 
     //make the PlayerManager so we can get it's instance in other files
     private static PlayerManager playerManager = new PlayerManager();
-
 
     //Instantiate private vars the player manager will use
     private static final List<AshesPlayer> playerList = new ArrayList<>();
@@ -22,8 +22,12 @@ public class PlayerManager {
     //Create an instance of the player save loader
     private final PlayerSaveLoad saveLoad = new PlayerSaveLoad();
 
+    private final List<UUID> gmList = new ArrayList<UUID>();
 
-    private PlayerManager(){}
+    private PlayerManager(){
+        gmList.add(UUID.fromString("959e2a47-f4ee-4492-9a4f-387a2d9340c3"));
+        gmList.add(UUID.fromString("5007392d-a76f-4080-98b0-0fa1a416c1ae"));
+    }
 
     /**
      * Get an ashes player from the array based on a player query
@@ -65,6 +69,11 @@ public class PlayerManager {
         managerLog("Added " + ashesPlayer.getDisplayName() + " Level: " + ashesPlayer.getLevel());
     }
 
+    /**
+     * Check if player exists
+     * @param player to check
+     * @return whether the player exists
+     */
     public boolean playerExists(Player player) {
         for(AshesPlayer ashesPlayer : playerList) {
             if(ashesPlayer.getUUID() == player.getUniqueId()){ System.out.println("Player Exists"); return true; }
@@ -112,6 +121,26 @@ public class PlayerManager {
         saveLoad.loadPlayer(player);
     }
 
+    public boolean isGM(AshesPlayer player){
+
+        //Whether the player is a GM
+        boolean isGM = false;
+
+        //iterate through GM UUIDs
+        for(UUID uuid : gmList){
+            //If the UUID is equal to a players UUID
+            if(player.getUUID().equals(uuid)){
+
+                //set isgm to true
+                isGM = true;
+                break;
+            }
+        }
+
+        //return whether they're a GM or not
+        return isGM;
+    }
+
     /**
      * Log to the con
      * @param message
@@ -119,6 +148,4 @@ public class PlayerManager {
     private void managerLog(String message) {
         System.out.println("[Ashes] [Player Manger]" + message);
     }
-
-
 }

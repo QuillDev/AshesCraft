@@ -1,6 +1,7 @@
 package ashes.quill.NodeSystem;
 
 import ashes.quill.Utils.Coordinates2d;
+import org.bukkit.Bukkit;
 
 import java.util.Objects;
 
@@ -8,9 +9,12 @@ import java.util.Objects;
 
 public class Node {
 
+    private final Coordinates2d coordinates;
+
     private int experience;
     private int level;
-    private final Coordinates2d coordinates;
+    private int goalExp = calcGoalExp();
+
     private String name;
 
     /**
@@ -93,6 +97,45 @@ public class Node {
      */
     public int getLevel() {
         return level;
+    }
+
+    /**
+     * Adds experience to the node
+     * @param experience to add to the node
+     */
+    public void addExperience(int experience){
+        this.experience += experience;
+
+        //TODO remove
+        System.out.println(getName() + ": added " + experience + " EXP, Overall: " + this.experience);
+        calculateExp();
+    }
+
+    /**
+     * Calculate if we should level up
+     */
+    private void calculateExp() {
+        if(experience > goalExp){
+            //Level up
+            level++;
+
+            //set current exp to your current experience minus the goal experience (Cur: 700 - Goal: 500 = Kept: 200);
+            experience = experience - goalExp;
+
+            //set the goal exp using the new caluclation
+            goalExp = calcGoalExp();
+
+            //Say that the node has advanced to the next level
+            Bukkit.getPluginManager().getPlugin("Quill").getServer().broadcastMessage(getName() + " has advanced to a level " + level + " node.");
+        }
+    }
+
+    /**
+     * Calculate the experience for the next level
+     * @return the amount of exp needed for the next level
+     */
+    private int calcGoalExp(){
+        return (int) (500 * Math.pow(2, level * .7));
     }
 
     @Override
