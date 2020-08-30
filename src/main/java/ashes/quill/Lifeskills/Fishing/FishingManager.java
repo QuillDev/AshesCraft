@@ -7,11 +7,11 @@ import java.util.Random;
 public class FishingManager {
 
     //Sole instance of fishing manager
-    private static FishingManager fishingManager = new FishingManager();
+    private static final FishingManager fishingManager = new FishingManager();
 
     //List of registered fish
-    private List<Fish> freshwaterList = new ArrayList<Fish>();
-    private List<Fish> saltwaterList = new ArrayList<Fish>();
+    private final List<Fish> freshwaterList = new ArrayList<>();
+    private final List<Fish> saltwaterList = new ArrayList<>();
 
     //Private fishing manager constructor
     private FishingManager(){
@@ -26,8 +26,8 @@ public class FishingManager {
     }
 
     /**
-     * Generate
-     * @return
+     * Generate freshwater fish
+     * @return a Fish object using data from the freshwater fish list
      */
     public Fish generateFreshwaterFish(){
         //Create random num generator
@@ -36,11 +36,6 @@ public class FishingManager {
         return freshwaterList.get(random.nextInt(freshwaterList.size())).generate();
     }
 
-
-
-    public Fish generateFish(){
-        return null;
-    }
 
     //get an instance of the fishing manager
     public static FishingManager getInstance(){

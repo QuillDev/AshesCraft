@@ -3,12 +3,12 @@ package ashes.quill.Lifeskills.Fishing;
 import org.bukkit.ChatColor;
 
 public class Fish {
-    private String name;
+    private final String name;
 
-    private double avgWeight;
-    private double avgLength;
+    private final double avgWeight;
+    private final double avgLength;
 
-    private int rarity;
+    private final int rarity;
 
     public Fish(String name, double avgWeight, double avgLength, int rarity){
         this.name = name;
@@ -24,7 +24,7 @@ public class Fish {
 
     /**
      * Return the rarity as a formatted string
-     * @return a string of ther rarity
+     * @return a string of there rarity
      */
     public String rarityString(){
         String rarityText;
@@ -58,11 +58,11 @@ public class Fish {
     }
 
     public double getAvgWeight() {
-        return Math.round(avgWeight*100)/100;
+        return Math.round(avgWeight*100.0)/100.0;
     }
 
     public double getAvgLength() {
-        return Math.round(avgLength*100)/100;
+        return Math.round(avgLength*100.0)/100.0;
     }
 
     public String getName() {

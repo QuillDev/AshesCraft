@@ -2,10 +2,7 @@ package ashes.quill.NodeSystem;
 
 import ashes.quill.Config.Constants;
 import ashes.quill.Data.DataManager;
-import ashes.quill.Player.AshesPlayer;
-import ashes.quill.Player.PlayerManager;
 import ashes.quill.Utils.Coordinates2d;
-import org.bukkit.entity.Player;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -32,7 +29,7 @@ public class NodeSaveLoad {
 
         File path = new File(Constants.nodePath, node.getX() + ", " + node.getZ() + ".json");
 
-        dataManager.writeJSON(path, nodeObject);
+        dataManager.writeJSONSafe(path, nodeObject);
     }
 
     /**

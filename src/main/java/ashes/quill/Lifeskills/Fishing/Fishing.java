@@ -2,13 +2,10 @@ package ashes.quill.Lifeskills.Fishing;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -18,22 +15,19 @@ import java.util.List;
 public class Fishing {
 
     //get an instance of the fishing manager
-    private FishingManager fishingManager = FishingManager.getInstance();
+    private final FishingManager fishingManager = FishingManager.getInstance();
 
     /**
-     * Fishing
-     * @param event
+     * Runs when a fishing event is executed
+     * @param event PlayerFishEvent from a player fishing
      */
     public void run(PlayerFishEvent event){
         //if the player didn't catch a fish, return
         if(event.getState() != PlayerFishEvent.State.CAUGHT_FISH){return;}
 
-        //Grab info about the player
-        Player player = event.getPlayer();
-        Inventory inventory = player.getInventory();
-
         //Change info of the fish
         Item fish = (Item) event.getCaught();
+        if(fish == null){ return;}
         ItemStack fishStack = fish.getItemStack();
 
         //Generate a fish
@@ -48,8 +42,7 @@ public class Fishing {
         LocalDate localDate = now.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         //Mess with the fish
-        List<String> lore = new ArrayList<String>();
-        lore.add(coolFish.rarityString() + " " + ChatColor.BOLD + ChatColor.ITALIC + coolFish.getName());
+        List<String> lore = new ArrayList<>();
         lore.add(ChatColor.WHITE + "Weight: " + coolFish.getAvgWeight() + "lbs");
         lore.add(ChatColor.WHITE + "Length: " + coolFish.getAvgLength() + "in");
         lore.add(ChatColor.WHITE + "Caught on " + localDate.getMonth() + " " + localDate.getDayOfMonth() + " " + localDate.getYear());

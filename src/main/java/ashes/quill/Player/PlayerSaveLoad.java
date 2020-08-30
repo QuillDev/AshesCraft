@@ -29,7 +29,7 @@ public class PlayerSaveLoad {
 
         File path = new File(Constants.playerPath, ashesPlayer.getUUID().toString()+".json");
 
-        dataManager.writeJSON(path, playerObject);
+        dataManager.writeJSONSafe(path, playerObject);
     }
 
     /**
